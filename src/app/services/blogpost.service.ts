@@ -8,12 +8,16 @@ import { Blogpost } from '../models/blogpost'
 })
 
 export class BlogpostService {
-  baseUrl = 'http://localhost:3000/api/v1';
+  baseUrl = 'http://localhost:3000/api/v1/blog-posts';
 
   constructor(private httpClient: HttpClient) { }
 
   getBlogposts(): Observable<Blogpost[]>{
-    return this.httpClient.get<Blogpost[]>(`${this.baseUrl}/blog-posts`);
+    return this.httpClient.get<Blogpost[]>(`${this.baseUrl}/`);
+  }
+
+  getBlogpostsById(id): Observable<Blogpost>{
+    return this.httpClient.get<Blogpost>(`${this.baseUrl}/${id}`)
   }
 }
 
