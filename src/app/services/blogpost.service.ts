@@ -17,7 +17,16 @@ export class BlogpostService {
   }
 
   getBlogpostsById(id): Observable<Blogpost>{
-    return this.httpClient.get<Blogpost>(`${this.baseUrl}/${id}`)
+    return this.httpClient.get<Blogpost>(`${this.baseUrl}/${id}`);
+  }
+
+  deleteSingleBlogpost(id: string){
+    return this.httpClient.delete(`${this.baseUrl}/${id}`);
+  }
+
+  deleteBlogposts(ids: string[]){
+    const allIds = ids.join(',')
+    return this.httpClient.delete(`${this.baseUrl}/?ids=${allIds}`)
   }
 }
 
