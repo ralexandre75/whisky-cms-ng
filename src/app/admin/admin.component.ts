@@ -19,7 +19,7 @@ export class AdminComponent implements OnInit {
     this.blogpostService
         .getBlogposts()
         .subscribe(data => {
-          console.log(data);
+          this.refresh(data);
           this.allBlogposts = data;
         });
         
@@ -29,7 +29,22 @@ export class AdminComponent implements OnInit {
     //console.log("selectedOptions", selectedOptions);
     const ids = selectedOptions.map(so => so.value);
     //console.log("ids", ids);
-    this.blogpostService.deleteSingleBlogpost(ids[0]).subscribe(data => console.log('data'));
+    if(ids.length === 1) {
+      this.blogpostService
+            .deleteSingleBlogpost(ids[0])
+            .subscribe(data => this.refresh(data), err => console.error(err));
+    } else {
+      return this.blogpostService
+                    .deleteBlogposts(ids)
+                    .subscribe(data => this.refresh(data), err => console.error(err));
+    }
+  }
+
+  refresh(data) {
+      console.log('data', data);
+      this.blogpostService.getBlogposts().subscribe(data => {
+      this.allBlogposts = data;
+    })
   }
 
 }
