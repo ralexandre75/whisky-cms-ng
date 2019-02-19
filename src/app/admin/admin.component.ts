@@ -32,11 +32,11 @@ export class AdminComponent implements OnInit {
     if(ids.length === 1) {
       this.blogpostService
             .deleteSingleBlogpost(ids[0])
-            .subscribe(data => this.refresh(data), err => console.error(err));
+            .subscribe(data => this.refresh(data), err => this.handleError(err));
     } else {
       return this.blogpostService
                     .deleteBlogposts(ids)
-                    .subscribe(data => this.refresh(data), err => console.error(err));
+                    .subscribe(data => this.refresh(data), err => this.handleError(err));
     }
   }
 
@@ -45,6 +45,10 @@ export class AdminComponent implements OnInit {
       this.blogpostService.getBlogposts().subscribe(data => {
       this.allBlogposts = data;
     })
+  }
+
+  handleError(err){
+    console.error('Bordel une erreur', err);
   }
 
 }
