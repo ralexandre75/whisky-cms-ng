@@ -41,6 +41,7 @@ export class BlogpostCreateComponent implements OnInit {
     console.log('OK blog post created', data);
     this.creationForm.reset();
     formDirective.resetForm();
+    this.blogpostService.dispatchBlogpostCreated(data._id);
   }
 
   handleError(error) {

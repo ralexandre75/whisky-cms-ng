@@ -22,6 +22,12 @@ export class AdminComponent implements OnInit {
           this.refresh(data);
           this.allBlogposts = data;
         });
+
+    this.blogpostService.handleBlogpostCreated()
+        .subscribe(data => {
+            console.log('AdminComponent received', data);
+            this.refresh(data);
+        });
         
   }
 
