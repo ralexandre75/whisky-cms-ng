@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Blogpost } from '../models/blogpost';
 import { Observable } from 'rxjs';
 import { BlogpostService } from '../services/blogpost.service';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -10,11 +12,15 @@ import { BlogpostService } from '../services/blogpost.service';
 })
 export class AdminComponent implements OnInit {
   //blogposts$: Observable<Blogpost[]>;
-  allBlogposts: Blogpost[]
+  allBlogposts: Blogpost[];
+  errorFromServer = '';
 
-  constructor( private blogpostService: BlogpostService) { }
+  constructor( private blogpostService: BlogpostService, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
+    if(!this.authService.isAuthenticated) {
+      this.router.navigate(['/auth']);
+    }
     //this.blogposts$ = this.blogpostService.getBlogposts();
     this.blogpostService
         .getBlogposts()
@@ -54,7 +60,15 @@ export class AdminComponent implements OnInit {
   }
 
   handleError(err){
+    this.errorFromServer = `Error ${err.status} - ${err.statusText}`
     console.error('Bordel une erreur', err);
+  }
+
+  logout() {
+    this.authService.logout().subscribe(data => {
+      console.log(data);
+      this.router.navigate(['/auth'])
+    }, err => console.error(err))
   }
 
 }
